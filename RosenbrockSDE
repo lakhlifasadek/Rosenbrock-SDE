@@ -1,0 +1,30 @@
+function [t,Y] = RosenbrockSDE(A,B,Y0,T0,Tf)
+% [t,Y] = RosenbrockSDE(A,B,Y0,T0,Tf)
+% The resolution of the systems of differential equations
+%  (Rosenbrock method)
+%                                  dY/dt = A*Y + B (*)
+%                                    Y(T0) = Y_0
+% Input:        A          : size matrix  (m,m).
+%               B          : size matrix  (m,s).
+%               Tf , T0    : temps.
+% Output:       Y          : solution to the inslant Tf of (*)  
+%    Author                :  LAKHLIFA SADEK.
+%    Last modification     :  10/08/2019
+% E-mail: lakhlifasdek@gmail.com; sadek.l@ucd.ac.ma
+% ORCID : https://orcid.org/0000-0001-9780-2592
+%
+h=0.001; N=(Tf-T0)/h; 
+[p]=size(B,1);
+gama=1;%1/2;
+TAA=(1/h)*eye(p)-gama*A;
+t(1)=T0;
+Y=[Y0(:)];
+for k=1:N
+    t(k+1)=T0+(k)*h;
+   P1=TAA\(A*Y0+B); 
+   P2=TAA\(A*(Y0+P1)+B-(2/h)*P1);
+   Y0=Y0+(3/2)*P1+(1/2)*P2;
+   Y=[Y Y0(:)];
+end 
+return
+end
